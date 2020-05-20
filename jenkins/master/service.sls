@@ -18,6 +18,20 @@ add_jenkins_yum_repo:
 
 {%- endif %}
 
+{%- if master.home %}
+
+jenkins_home_dir:
+  file.directory:
+    - name: {{ master.home }}
+    - makedirs: true
+    - user: jenkins
+    - group: jenkins
+    - mode: '0755'
+    - require_in:
+      - pkg: jenkins_packages
+
+{%- endif %}
+
 jenkins_packages:
   pkg.installed:
   - names: {{ master.pkgs }}

@@ -31,5 +31,5 @@
     - file: {{ master.home }}/users/{{ user_name }}/config.xml
   - unless: test -e {{ master.home }}/users/{{ user_name }}/.config_created
 
-{%- endif %}
 {%- endfor %}
+{%- endif %}

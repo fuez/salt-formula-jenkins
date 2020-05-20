@@ -14,13 +14,13 @@ setup_jenkins_cli:
   - require:
     - cmd: jenkins_service_running
 
-{%- set master_username = 'admin' %}
+{%- set master_username = {{ master.admin_user | default('admin') %}
 {%- for plugin in master.plugins %}
 
 install_jenkins_plugin_{{ plugin.name }}:
   cmd.run:
   - name: >
-      java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} install-plugin --username {{ master_username }} --password {{ master.admin_pwd }} {{ plugin.name }}
+      java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} install-plugin --username {{ master_username }} --password '{{ master.admin_pwd }}' {{ plugin.name }}
   - unless: "[ -d {{ master.home }}/plugins/{{ plugin.name }} ]"
   - cwd: /root
   - require:
