@@ -20,7 +20,7 @@ setup_jenkins_cli:
 install_jenkins_plugin_{{ plugin.name }}:
   cmd.run:
   - name: >
-      java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} install-plugin --username {{ master_username }} --password {{ master.user.admin.password }} {{ plugin.name }}
+      java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} install-plugin --username {{ master_username }} --password {{ master.admin_pwd }} {{ plugin.name }}
   - unless: "[ -d {{ master.home }}/plugins/{{ plugin.name }} ]"
   - cwd: /root
   - require:
