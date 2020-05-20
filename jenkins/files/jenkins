@@ -9,7 +9,7 @@ JAVA=/usr/bin/java
 
 # arguments to pass to java
 #JAVA_ARGS="-Xmx256m"
-JAVA_ARGS="{{ master.get('java_args', '') }} -Djava.net.preferIPv4Stack=true -Djenkins.install.runSetupWizard=false" # make jenkins listen on IPv4 address and disable setup wizard
+JENKINS_JAVA_OPTIONS="{{ master.get('java_args', '') }} -Djava.net.preferIPv4Stack=true -Djenkins.install.runSetupWizard=false" # make jenkins listen on IPv4 address and disable setup wizard
 
 PIDFILE=/var/run/jenkins/jenkins.pid
 
@@ -20,7 +20,7 @@ JENKINS_USER=jenkins
 JENKINS_WAR=/usr/lib/jenkins/jenkins.war
 
 # jenkins home location
-JENKINS_HOME=/var/lib/jenkins
+JENKINS_HOME={{ master.home | default("/var/lib/jenkins") }}
 
 # set this to false if you don't want Hudson to run by itself
 # in this set up, you are expected to provide a servlet container
@@ -57,4 +57,11 @@ PREFIX=/jenkins
 # --webroot=~/.jenkins/war
 # --prefix=$PREFIX
 
+{%- if master.admin_pwd | default("") %}
+JENKINS_ARGS="--webroot=/var/cache/jenkins/war \
+--httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT \
+--argumentsRealm.passwd.{{ master.admin_user | default('admin') }}='{{ master.admin_pwd }}' \
+--argumentsRealm.roles.{{ master.admin_user | default('admin') }}=admin"
+{%- else %}
 JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT"
+{%- endif %}
