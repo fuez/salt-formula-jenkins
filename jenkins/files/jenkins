@@ -58,7 +58,11 @@ PREFIX=/jenkins
 # --prefix=$PREFIX
 
 {%- if master.admin_pwd | default("") %}
-JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --argumentsRealm.passwd.{{ master.admin_user | default('admin')}}='{{ master.admin_pwd }}' --argumentsRealm.roles.{{ master.admin_user | default('admin) }}=admin"
+JENKINS_ARGS="--webroot=/var/cache/jenkins/war /
+--httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT /
+--argumentsRealm.passwd.{{ master.admin_user | default('admin') }}='{{ master.admin_pwd }}' /
+--argumentsRealm.roles.user={{ master.admin_user | default('admin') }}"
+--argumentsRealm.roles.{{ master.admin_user | default('admin') }}=admin"
 {%- else %}
 JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT"
 {%- endif %}
