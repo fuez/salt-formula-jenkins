@@ -1,8 +1,22 @@
 {%- from "jenkins/map.jinja" import master with context %}
 {%- if master.enabled %}
 
-include:
-- java
+{%- set os_family = salt["config.get"]("os_family", "RedHat") %}
+{%- if os_family in ["RedHat"] %}
+
+add_jenkins_yum_repo:
+  pkgrepo.managed:
+    - name: jenkins
+    - humanname: Jenkins
+    - baseurl: http://pkg.jenkins.io/redhat
+    - comments:
+        - 'https://pkg.jenkins.io/redhat/'
+    - gpgcheck: 1
+    - gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
+    - require_in:
+      - pkg: jenkins_packages
+
+{%- endif %}
 
 jenkins_packages:
   pkg.installed:

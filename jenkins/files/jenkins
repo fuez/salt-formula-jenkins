@@ -17,7 +17,7 @@ PIDFILE=/var/run/jenkins/jenkins.pid
 JENKINS_USER=jenkins
 
 # location of the jenkins war file
-JENKINS_WAR=/usr/share/jenkins/jenkins.war
+JENKINS_WAR=/usr/lib/jenkins/jenkins.war
 
 # jenkins home location
 JENKINS_HOME=/var/lib/jenkins
@@ -39,7 +39,7 @@ JENKINS_LOG=/var/log/jenkins/$NAME.log
 MAXOPENFILES=8192
 
 # port for HTTP connector (default 8080; disable with -1)
-HTTP_PORT={{ pillar.jenkins.master.http.port }}
+HTTP_PORT={{ master.http.port }}
 
 # port for AJP connector (disabled by default)
 AJP_PORT=-1
