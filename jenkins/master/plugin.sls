@@ -14,6 +14,7 @@ setup_jenkins_cli:
   - require:
     - cmd: jenkins_service_running
 
+{%- if master.plugins is defined %}
 {%- set master_username = master.admin_user | default('admin') %}
 {%- for plugin in master.plugins %}
 
@@ -28,3 +29,4 @@ install_jenkins_plugin_{{ plugin.name }}:
     - cmd: jenkins_service_running
 
 {%- endfor %}
+{%- endif %}
