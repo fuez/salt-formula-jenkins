@@ -20,7 +20,7 @@ JENKINS_USER=jenkins
 JENKINS_WAR=/usr/lib/jenkins/jenkins.war
 
 # jenkins home location
-JENKINS_HOME=/var/lib/jenkins
+JENKINS_HOME={{ master.home | default("/var/lib/jenkins") }}
 
 # set this to false if you don't want Hudson to run by itself
 # in this set up, you are expected to provide a servlet container
@@ -57,4 +57,8 @@ PREFIX=/jenkins
 # --webroot=~/.jenkins/war
 # --prefix=$PREFIX
 
+{%- if master.admin_pwd | default("") %}
+JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --argumentsRealm.passwd.$ADMIN_USER={{ master.admin_pwd}} --argumentsRealm.roles.$ADMIN_USER=admin"
+{%- else %}
 JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT"
+{%- endif %}
