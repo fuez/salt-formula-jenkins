@@ -18,6 +18,11 @@
     },
 }, merge=pillar.jenkins.get('master', {})) %}
 
+# fall back to default home when device is not mounted
+{%- if not salt["file.directory_exists"](master.home) %}
+{%- do master.update({ 'home':'/var/lib/jenkins' }) %}
+{%- endif %}
+
 {% set job_builder = salt['grains.filter_by']({
     'Debian': {
         'pkgs': ['jenkins-job-builder'],
