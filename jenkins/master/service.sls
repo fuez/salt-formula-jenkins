@@ -18,7 +18,9 @@ add_jenkins_yum_repo:
 
 {%- endif %}
 
-{%- if master.home %}
+jenkins_packages:
+  pkg.installed:
+  - names: {{ master.pkgs }}
 
 jenkins_home_dir:
   file.directory:
@@ -27,14 +29,8 @@ jenkins_home_dir:
     - user: jenkins
     - group: jenkins
     - mode: '0755'
-    - require_in:
+    - require:
       - pkg: jenkins_packages
-
-{%- endif %}
-
-jenkins_packages:
-  pkg.installed:
-  - names: {{ master.pkgs }}
 
 jenkins_{{ master.config }}:
   file.managed:
@@ -45,6 +41,7 @@ jenkins_{{ master.config }}:
   - template: jinja
   - require:
     - pkg: jenkins_packages
+    - file: jenkins_home_dir
 
 {%- if master.get('no_config', False) == False %}
 
