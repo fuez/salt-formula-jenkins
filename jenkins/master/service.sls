@@ -25,7 +25,6 @@ jenkins_packages:
 jenkins_home_dir:
   file.directory:
     - name: {{ master.home }}
-    - makedirs: true
     - user: jenkins
     - group: jenkins
     - mode: '0755'
