@@ -8,8 +8,7 @@ add_jenkins_yum_repo:
   pkgrepo.managed:
     - name: jenkins
     - humanname: Jenkins
-    # - baseurl: http://pkg.jenkins.io/redhat
-    - baseurl: https://mirrors.tuna.tsinghua.edu.cn/jenkins/redhat
+    - baseurl: http://pkg.jenkins.io/redhat
     - comments:
         - 'https://pkg.jenkins.io/redhat/'
     - gpgcheck: 1
