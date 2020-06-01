@@ -2,7 +2,7 @@
 {%- if master.enabled %}
 
 {%- set os_family = salt["config.get"]("os_family", "RedHat") %}
-{%- if os_family in ["RedHat"] %}
+{%- if os_family in ["RedHat"] and (master.add_pkgrepo | default(False)) %}
 
 add_jenkins_yum_repo:
   pkgrepo.managed:
